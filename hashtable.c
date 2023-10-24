@@ -18,3 +18,9 @@ void initializeRandomHasher(struct RandomHashFunction* hasher, int M, int n) {
 void destroyRandomHasher(struct RandomHashFunction* hasher) {
     free(hasher->hashTable);
 }
+
+struct HashTable {
+    int attribute;
+    int** slots;
+    struct RandomHashFunction hashStrategy;
+};
