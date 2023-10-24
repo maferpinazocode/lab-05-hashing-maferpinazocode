@@ -14,3 +14,7 @@ void initializeRandomHasher(struct RandomHashFunction* hasher, int M, int n) {
         hasher->hashTable[i] = rand() % n;
     }
 }
+
+void destroyRandomHasher(struct RandomHashFunction* hasher) {
+    free(hasher->hashTable);
+}
