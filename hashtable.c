@@ -111,3 +111,14 @@ int find(struct HashTable* table, int x) {
     }
     return -1;
 }
+
+void deleteHashTable(struct HashTable* table) {
+    for (int i = 0; i < table->attribute; i++) {
+        if (table->bucket[i] != NULL) {
+            free(table->bucket[i]);
+        }
+    }
+    free(table->bucket);
+    destroyRandomHasher(&(table->hashStrategy));
+    free(table);
+}
