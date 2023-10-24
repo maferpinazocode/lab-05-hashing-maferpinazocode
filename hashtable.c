@@ -24,3 +24,16 @@ struct HashTable {
     int** slots;
     struct RandomHashFunction hashStrategy;
 };
+
+struct HashTable* createHashTable(int attribute, int n) {
+    struct HashTable* storage = (struct HashTable*)malloc(sizeof(struct HashTable));
+    storage->attribute = attribute;
+    storage->slots = (int**)malloc(n * sizeof(int*));
+    initializeRandomHasher(&(storage->hashStrategy), n, n);
+
+    for (int i = 0; i < n; i++) {
+        storage->slots[i] = NULL;
+    }
+
+    return storage;
+}
