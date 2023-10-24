@@ -68,3 +68,32 @@ void insert(struct HashTable* table, int x) {
     table->bucket[index] = newList;
 }
 
+void delete(struct HashTable* table, int x) {
+    int index = table->hashStrategy.hashTable[x];
+    if (table->bucket[index] != NULL) {
+        int length = 0;
+        while (table->bucket[index][length] != -1) {
+            length++;
+        }
+
+        int* updatedList = (int*)malloc((length - 1) * sizeof(int));
+        int i = 0;
+        int j = 0;
+
+        while (i < length) {
+            if (table->bucket[index][i] != x) {
+                updatedList[j] = table->bucket[index][i];
+                j++;
+            }
+            i++;
+        }
+
+        free(table->bucket[index]);
+        if (j > 0) {
+            updatedList[j] = -1;
+            table->bucket[index] = updatedList;
+        } else {
+            table->bucket[index] = NULL;
+        }
+    }
+}
