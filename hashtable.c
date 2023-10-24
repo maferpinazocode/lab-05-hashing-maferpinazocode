@@ -122,3 +122,22 @@ void deleteHashTable(struct HashTable* table) {
     destroyRandomHasher(&(table->hashStrategy));
     free(table);
 }
+
+int main() {
+    struct HashTable* hashTable = createHashTable(7, 10);
+
+    insert(hashTable, 7);
+    insert(hashTable, 15);
+    insert(hashTable, 25);
+
+    printf("Searching 15: %d\n", find(hashTable, 15)); //should print 15
+    printf("Searching 7: %d\n", find(hashTable, 7));  //should print 7
+
+    delete(hashTable, 15);
+
+    printf("Searching 15 after deleting: %d\n", find(hashTable, 15)); //should print -1
+    
+    deleteHashTable(hashTable);
+
+    return 0;
+}
