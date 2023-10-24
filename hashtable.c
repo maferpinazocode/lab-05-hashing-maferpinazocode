@@ -21,19 +21,50 @@ void destroyRandomHasher(struct RandomHashFunction* hasher) {
 
 struct HashTable {
     int attribute;
-    int** slots;
+    int** bucket;
     struct RandomHashFunction hashStrategy;
 };
 
 struct HashTable* createHashTable(int attribute, int n) {
-    struct HashTable* storage = (struct HashTable*)malloc(sizeof(struct HashTable));
-    storage->attribute = attribute;
-    storage->slots = (int**)malloc(n * sizeof(int*));
-    initializeRandomHasher(&(storage->hashStrategy), n, n);
+    struct HashTable* table = (struct HashTable*)malloc(sizeof(struct HashTable));
+    table->attribute = attribute;
+    table->bucket = (int**)malloc(n * sizeof(int*));
+    initializeRandomHasher(&(table->hashStrategy), n, n);
 
     for (int i = 0; i < n; i++) {
-        storage->slots[i] = NULL;
+        table->bucket[i] = NULL;
     }
 
-    return storage;
+    return table;
 }
+
+int miMod(int x, int n) {
+    return x % n;
+}
+
+void insert(struct HashTable* table, int x) {
+    int index = table->hashStrategy.hashTable[x];
+    int* newList = NULL;
+    int length = 0;
+
+    if (table->bucket[index] == NULL) {
+        newList = (int*)malloc(2 * sizeof(int));
+        newList[0] = x;
+        newList[1] = -1;
+    } else {
+        while (table->bucket[index][length] != -1) {
+            length++;
+        }
+        newList = (int*)malloc((length + 2) * sizeof(int));
+
+        for (int i = 0; i < length; i++) {
+            newList[i] = table->bucket[index][i];
+        }
+        newList[length] = x;
+        newList[length + 1] = -1;
+        free(table->bucket[index]);
+    }
+
+    table->bucket[index] = newList;
+}
+
